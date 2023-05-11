@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Orders } from './orders.model';
+import * as XLSX from 'xlsx';
+
 
 @Component({
   selector: 'app-root',
@@ -10,7 +12,7 @@ import { Orders } from './orders.model';
 export class AppComponent implements OnInit{
 
   parentSelector: boolean = false;
-  
+
   selectedDataFromTable = [];
 
   searchParameter:string;
@@ -23,7 +25,7 @@ export class AppComponent implements OnInit{
 
   Distributions: string[] = ["Bangalore","Patna","Hyderabad"];
 
-  orders: Orders[] = [
+  orders: any[] = [
   {
     id:213,
     customer: "Souptik C",
@@ -140,7 +142,16 @@ export class AppComponent implements OnInit{
   }
 
   csvExport(){
-
+    const heading = [["Ref ID","Customer","Product","Date","Distribution","Status","Price"] ];
+    const wb = XLSX.utils.book_new();
+    const ws: any = XLSX.utils.json_to_sheet([]);
+    XLSX.utils.sheet_add_aoa(ws, heading);
+    XLSX.utils.sheet_add_json(ws, this.selectedDataFromTable,{
+      origin:'A2',
+      skipHeader:true,
+    });
+    XLSX.utils.book_append_sheet(wb, ws, 'Orders');
+    XLSX.writeFile(wb, 'orders_report.xlsx');
   }
 	
 
