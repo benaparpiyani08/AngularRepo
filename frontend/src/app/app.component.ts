@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Orders } from './orders.model';
 
 @Component({
@@ -7,7 +7,11 @@ import { Orders } from './orders.model';
   styleUrls: ['./app.component.scss']
 })
 
-export class AppComponent {
+export class AppComponent implements OnInit{
+
+  parentSelector: boolean = false;
+  
+  selectedDataFromTable = [];
 
   searchParameter:string;
 
@@ -97,13 +101,29 @@ export class AppComponent {
 	ngOnInit() {
 		
 	}
-  title = 'toolsets';
-  parentSelector: boolean = false;
 
-  onChangeFood($event) {
+  onChange($event) {
     const id = $event.target.value;
     const isChecked = $event.target.checked;
 
+    if(id != -1){
+      if(isChecked){
+          var data = this.orders.filter(dat => dat.id == id);
+          this.selectedDataFromTable.push(...data);
+      }
+      else if(!isChecked){
+        this.selectedDataFromTable.splice(this.selectedDataFromTable.findIndex(a => a.id === id) , 1)
+      }
+    }
+    else if(id == -1 && isChecked == true){
+      this.selectedDataFromTable  = this.orders;
+    }
+    else if(id == -1 && isChecked == false){
+      this.selectedDataFromTable.length = 0;
+    }
+    console.log(this.selectedDataFromTable)
+   
+    //to select all checkboxes
     this.orders = this.orders.map((d) => {
       if (d.id == id) {
         d.select = isChecked;
@@ -114,29 +134,14 @@ export class AppComponent {
         d.select = this.parentSelector;
         return d;
       }
+      console.log(d)
       return d;
     });
-    console.log(this.orders);
+  }
+
+  csvExport(){
+
   }
 	
-	// getProducts(): void {
-	// 	//this.productService.getProducts().subscribe(products => this.products = products);
-	// }
-  // selectedRows:any[];
-  // selectRow(checkValue) {
-  //   if (checkValue) {
-  //     this.selectedRows = this.products.filter(value => value.year < 2000);
-  //   } else {
-  //     this.selectedRows = [];
-  //   }
-  // }
-  // checkAllCheckBox(ev: any) {
-  //   console.log(ev)
-	// 	this.products.forEach(x => x.checked = ev.target.checked)
-	// }
 
-	// isAllCheckBoxChecked() {
-  //   console.log("isAllCheckBoxChecked event invoked")
-	// 	console.log(this.products.every(p => p.checked));
-	// }
 }

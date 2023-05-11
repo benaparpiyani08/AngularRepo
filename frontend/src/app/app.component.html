@@ -18,7 +18,7 @@
         <option>Patna</option>
         <option>Hyderabad</option> 
       </select> 
-      <button class="button">Export Orders</button>
+      <button class="button" (click)="csvExport()" >Export Orders</button>
     </div>
 </div>
 
@@ -30,7 +30,7 @@
       <thead>
         <tr>
           <th scope="col">
-            <input class="form-check-input" type="checkbox" [(ngModel)]="parentSelector" [value]="-1" (change)="onChangeFood($event)" />
+            <input class="form-check-input" type="checkbox" [(ngModel)]="parentSelector" [value]="-1" (change)="onChange($event)" />
           </th>
           <th scope="col">Ref. ID</th>
           <th scope="col">Customer</th>
@@ -44,7 +44,7 @@
       <tbody>
         <tr *ngFor="let order of orders | customerProductFilter:searchParameter; let i=index; let odd = odd; " [ngClass]="odd ? 'odd_col' : 'even_col'">
           <th scope="row">
-            <input class ="form-check-input" type="checkbox" [value]="order.id" [checked]="order.select" (change)="onChangeFood($event)"/>
+            <input class ="form-check-input" type="checkbox" [value]="order.id" [checked]="order.select" [(ngModel)]="order.select" (change)="onChange($event)"/>
           </th>
           <td>{{ order.id }}</td>
           <td>{{ order.customer }}</td>
@@ -57,38 +57,7 @@
       </tbody>
     </table>
   </div>
-  <div>
-
-  
-   
-  
+  <div>  
 </div>
 
-
-<!---
-<div *ngIf="products; else elseBlock">
-	<table class="datatable">
-		<thead>
-			<tr>
-				<th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
-				<th>ID</th>
-				<th>Code</th>
-				<th>Name</th>
-				<th>Price</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let p of products; let i=index; let odd = odd" [ngClass]="odd ? 'odd_col' : 'even_col'">
-				<td><input type="checkbox" value="{{p.id}}" [(ngModel)]="products[i].checked"></td>
-				<td>{{ p.id }}</td>
-				<td>{{ p.name }}</td>
-				<td>{{ p.code }}</td>
-				<td>{{ p.price }}</td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<ng-template #elseBlock>No record found</ng-template>
-
--->
 <router-outlet></router-outlet>
