@@ -1,0 +1,94 @@
+
+<div class="container">
+    <div class="table__header">
+      <h2>Orders</h2>
+    </div>
+
+    <div class="inputControl-group">
+      <input type="text" class="search-control" [(ngModel)]="searchParameter" placeholder="Search by any parameter...">
+      <select name="status" class="status-control" placeholder="Status" [(ngModel)]="selectedStatus">
+        <option [disabled]="true" class="placeholder">Status</option>
+        <option>In Transit</option>
+        <option>Placed</option>
+        <option>Out For Delivery</option>
+        </select>
+      <select name="distribution" class="distribution-control" placeholder="Distribution" [(ngModel)]="selectedDistribution">   
+        <option [disabled]="true" class="placeholder">Distribution</option>
+        <option>Bangalore</option>
+        <option>Patna</option>
+        <option>Hyderabad</option> 
+      </select> 
+      <button class="button">Export Orders</button>
+    </div>
+</div>
+
+<div class="main_table">
+  <div class="sub-title">
+    <h5>All orders <span>(2 Orders Selected)</span></h5>
+  </div>
+  <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">
+            <input class="form-check-input" type="checkbox" [(ngModel)]="parentSelector" [value]="-1" (change)="onChangeFood($event)" />
+          </th>
+          <th scope="col">Ref. ID</th>
+          <th scope="col">Customer</th>
+          <th scope="col">Product(s)</th>
+          <th scope="col">Date</th>
+          <th scope="col">Distribution</th>
+          <th scope="col">Status</th>
+          <th scope="col">Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders | customerProductFilter:searchParameter; let i=index; let odd = odd; " [ngClass]="odd ? 'odd_col' : 'even_col'">
+          <th scope="row">
+            <input class ="form-check-input" type="checkbox" [value]="order.id" [checked]="order.select" (change)="onChangeFood($event)"/>
+          </th>
+          <td>{{ order.id }}</td>
+          <td>{{ order.customer }}</td>
+          <td>{{ order.product }}</td>
+          <td>{{ order.date }}</td>
+          <td>{{ order.distribution }}</td>
+          <td>{{ order.status }}</td>
+          <td>Rs {{ order.price }} /-</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+
+  
+   
+  
+</div>
+
+
+<!---
+<div *ngIf="products; else elseBlock">
+	<table class="datatable">
+		<thead>
+			<tr>
+				<th><input type="checkbox" [checked]="isAllCheckBoxChecked()" (change)="checkAllCheckBox($event)"></th>
+				<th>ID</th>
+				<th>Code</th>
+				<th>Name</th>
+				<th>Price</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let p of products; let i=index; let odd = odd" [ngClass]="odd ? 'odd_col' : 'even_col'">
+				<td><input type="checkbox" value="{{p.id}}" [(ngModel)]="products[i].checked"></td>
+				<td>{{ p.id }}</td>
+				<td>{{ p.name }}</td>
+				<td>{{ p.code }}</td>
+				<td>{{ p.price }}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<ng-template #elseBlock>No record found</ng-template>
+
+-->
+<router-outlet></router-outlet>
